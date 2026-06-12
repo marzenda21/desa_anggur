@@ -197,14 +197,6 @@ export default function Contact() {
 
             {/* Quick Contact Footer */}
             <div className="flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-100 pt-4 font-semibold px-2">
-              <span className="flex items-center space-x-1">
-                <Phone className="h-3 w-3" />
-                <span>+62 335 123456</span>
-              </span>
-              <span className="flex items-center space-x-1">
-                <Mail className="h-3 w-3" />
-                <span>info@krejengan-anggur.desa.id</span>
-              </span>
             </div>
           </motion.div>
 
