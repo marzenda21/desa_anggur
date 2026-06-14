@@ -84,7 +84,7 @@ export default function Login({ onLoginSuccess, onBackToPublic }) {
               <input
                 type="email"
                 required
-                placeholder="anggur.krejengan@gmail.com"
+                placeholder="username@gmail.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-10 pr-4 py-3.5 bg-slate-50 border border-slate-200 focus:border-primary/50 focus:bg-white rounded-2xl text-sm focus:outline-none transition-all"
@@ -136,13 +136,13 @@ export default function Login({ onLoginSuccess, onBackToPublic }) {
         </form>
 
         {/* Demo Helper Tip */}
-        <div className="p-3.5 bg-purple-50/50 rounded-2xl border border-purple-100/30 text-[10px] text-purple-700 leading-normal">
+        {/* <div className="p-3.5 bg-purple-50/50 rounded-2xl border border-purple-100/30 text-[10px] text-purple-700 leading-normal">
           <span className="font-bold">Info Demo Login:</span>
           <br />
           Email: <code className="bg-white px-1 rounded select-all font-mono">anggur.krejengan@gmail.com</code>
           <br />
           Sandi: <code className="bg-white px-1 rounded select-all font-mono">anggur321</code>
-        </div>
+        </div> */}
       </motion.div>
     </div>
   );

@@ -46,7 +46,7 @@ export default function ProfileDesa() {
             </p>
 
             <p className="text-slate-600 leading-relaxed">
-              Dipusatkan di sekitar Perpustakaan Desa Aqila, program ini melahirkan KOMPAK (Komunitas Pembudidaya Anggur Krejengan). Komunitas ini menjadi wadah edukasi warga dalam membudidayakan lebih dari 5 varietas anggur di pekarangan rumah, dengan bimbingan teknologi modern dan pemantauan terstruktur.
+              Dipusatkan di sekitar Perpustakaan Desa Aqila, program ini melahirkan KOMPAK (Komunitas Pembudidaya Anggur Krejengan). Komunitas ini menjadi wadah edukasi warga dalam membudidayakan lebih dari 10 varietas anggur di pekarangan rumah, dengan bimbingan teknologi modern dan pemantauan terstruktur.
             </p>
 
             {/* Quick highlights */}
@@ -102,7 +102,7 @@ export default function ProfileDesa() {
               </div>
             </div>
             <p className="text-center text-xs text-slate-500 mt-3 italic">
-              *Tonton video dokumentasi teknik perawatan dan panen anggur oleh komunitas tani Krejengan.
+              *Tonton video profile desa Krejengan.
             </p>
           </motion.div>
 

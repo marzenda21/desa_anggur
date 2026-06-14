@@ -222,7 +222,7 @@ function App() {
 
   // Render Public Portal view
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-slate-50 flex flex-col pb-16 md:pb-0">
       {/* Navigation */}
       <Navbar
         isLoggedIn={isLoggedIn}

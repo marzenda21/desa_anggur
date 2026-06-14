@@ -39,6 +39,7 @@ export default function AdminDashboard({
 }) {
   const [activeMenu, setActiveMenu] = useState('overview'); // 'overview', 'farmers', 'grapes', 'growth', 'gallery', 'articles'
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isLainnyaOpen, setIsLainnyaOpen] = useState(false);
   
   // CRUD state management
   const [editingItem, setEditingItem] = useState(null); // stores item being edited
@@ -268,29 +269,11 @@ export default function AdminDashboard({
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row relative">
+    <div className="h-[100dvh] w-screen overflow-hidden bg-slate-50 flex flex-col md:flex-row relative">
       
-      {/* Mobile Top Navbar */}
-      <div className="md:hidden bg-slate-900 text-white p-4 flex items-center justify-between z-40 border-b border-slate-800 shrink-0">
-        <div className="flex items-center space-x-2">
-          <div className="p-1.5 bg-gradient-to-tr from-primary to-leaf rounded-lg">
-            <Grape className="h-5 w-5 text-white" />
-          </div>
-          <span className="font-display font-extrabold text-sm tracking-wider">KREJENGAN ADMIN</span>
-        </div>
-        <button
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="p-2 text-slate-400 hover:text-white focus:outline-none"
-        >
-          {isSidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
-      </div>
-
-      {/* Sidebar Panel (Collapsible Drawer / Sticky Sidebar) */}
+      {/* Desktop Sidebar (hidden on mobile) */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-slate-900 text-slate-300 flex flex-col justify-between transition-transform duration-300 transform border-r border-slate-800
-          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
-          md:relative md:translate-x-0 md:flex shrink-0`}
+        className="hidden md:flex w-64 bg-slate-900 text-slate-300 flex-col justify-between border-r border-slate-800 shrink-0 h-full"
       >
         {/* Sidebar Header */}
         <div className="p-6 border-b border-slate-800 space-y-4">
@@ -333,7 +316,6 @@ export default function AdminDashboard({
               key={item.id}
               onClick={() => {
                 setActiveMenu(item.id);
-                setIsSidebarOpen(false);
                 closeForm();
               }}
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
@@ -368,8 +350,49 @@ export default function AdminDashboard({
         </div>
       </aside>
 
-      {/* Main Content Pane */}
-      <main className="flex-1 p-6 md:p-10 overflow-y-auto">
+      {/* Content Area Container */}
+      <div className="flex-1 h-full flex flex-col overflow-hidden">
+        {/* Sticky/Fixed Top Header (Both Mobile and Desktop) */}
+        <header className="sticky top-0 z-[40] w-full bg-slate-900 border-b border-slate-800 text-white py-4 px-6 flex items-center justify-between shrink-0 shadow-md">
+          <div className="flex items-center space-x-3">
+            <div className="p-1.5 bg-gradient-to-tr from-primary to-leaf rounded-lg shrink-0">
+              <Grape className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <span className="font-display font-extrabold text-sm md:text-lg tracking-wider text-white block">
+                {activeMenu === 'overview' && 'Ringkasan Dashboard'}
+                {activeMenu === 'farmers' && 'Kelola Data Petani'}
+                {activeMenu === 'grapes' && 'Kelola Varietas Anggur'}
+                {activeMenu === 'growth' && 'Laporan Pertumbuhan'}
+                {activeMenu === 'gallery' && 'Kelola Galeri Desa'}
+                {activeMenu === 'articles' && 'Kelola Artikel Anggur'}
+              </span>
+              <span className="md:hidden font-sans block text-[9px] font-bold text-leaf tracking-widest uppercase -mt-0.5">
+                Krejengan Desa Anggur
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2 bg-slate-800/80 border border-slate-700/60 px-3 py-1.5 rounded-xl text-xs">
+              <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center text-white font-bold shrink-0">
+                A
+              </div>
+              <span className="hidden sm:inline font-bold text-slate-300">Admin</span>
+            </div>
+
+            <button
+              onClick={onBackToPublic}
+              className="hidden sm:flex items-center space-x-1.5 px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-700/80 text-slate-300 hover:text-white rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer"
+            >
+              <Globe className="h-4 w-4" />
+              <span>Web Publik</span>
+            </button>
+          </div>
+        </header>
+
+        {/* Main Content Pane */}
+        <main className="flex-grow overflow-y-auto p-4 md:p-10 pb-24 md:pb-10">
         
         {/* Overview (Dashboard) Menu */}
         {activeMenu === 'overview' && (
@@ -1377,5 +1400,118 @@ export default function AdminDashboard({
 
       </main>
     </div>
+
+    {/* Mobile Bottom Navigation Bar */}
+    <nav 
+      className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 shadow-[0_-4px_12px_rgba(0,0,0,0.3)] z-30 select-none pb-safe"
+      style={{ paddingBottom: 'calc(0.25rem + env(safe-area-inset-bottom))' }}
+    >
+      <div className="flex justify-around items-center h-16 px-1">
+        {[
+          { id: 'overview', name: 'Overview', icon: <LayoutDashboard className="h-5 w-5" /> },
+          { id: 'farmers', name: 'Petani', icon: <User className="h-5 w-5" /> },
+          { id: 'grapes', name: 'Varietas', icon: <Grape className="h-5 w-5" /> },
+          { id: 'growth', name: 'Laporan', icon: <Activity className="h-5 w-5" /> },
+          { id: 'more', name: 'Lainnya', icon: <Menu className="h-5 w-5" />, isMoreTrigger: true }
+        ].map((item) => {
+          const isActive = item.isMoreTrigger 
+            ? (activeMenu === 'gallery' || activeMenu === 'articles') 
+            : activeMenu === item.id;
+          
+          return (
+            <button
+              key={item.id}
+              onClick={() => {
+                if (item.isMoreTrigger) {
+                  setIsLainnyaOpen(true);
+                } else {
+                  setActiveMenu(item.id);
+                  setIsLainnyaOpen(false);
+                  closeForm();
+                }
+              }}
+              className={`flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-all cursor-pointer ${
+                isActive ? 'text-primary scale-105' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <div className={`p-1 rounded-xl transition-all ${isActive ? 'bg-purple-500/10 text-primary' : 'bg-transparent'}`}>
+                {item.icon}
+              </div>
+              <span className={`text-[10px] font-bold mt-0.5 tracking-tight ${isActive ? 'text-primary font-extrabold' : 'text-slate-400 font-semibold'}`}>
+                {item.name}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </nav>
+
+    {/* Bottom Sheet overlay for mobile admin */}
+    <AnimatePresence>
+      {isLainnyaOpen && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.6 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsLainnyaOpen(false)}
+            className="fixed inset-0 bg-black z-40 md:hidden"
+          />
+          {/* Slide-up sheet */}
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+            className="fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 rounded-t-[2.5rem] z-50 p-6 pb-10 shadow-[0_-8px_30px_rgba(0,0,0,0.5)] md:hidden text-slate-300"
+          >
+            {/* Drag indicator bar */}
+            <div className="flex justify-center mb-4">
+              <div className="w-12 h-1.5 bg-slate-700 rounded-full" />
+            </div>
+
+            <h3 className="font-display font-extrabold text-white text-base mb-6 text-center">Menu Admin Lainnya</h3>
+
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { id: 'gallery', name: 'Kelola Galeri', icon: <ImageIcon className="h-5 w-5" />, color: 'bg-purple-500/10 text-purple-400 border-purple-500/20' },
+                { id: 'articles', name: 'Kelola Artikel', icon: <FileText className="h-5 w-5" />, color: 'bg-blue-500/10 text-blue-400 border-blue-500/20' },
+                { id: 'public', name: 'Lihat Web Publik', icon: <Globe className="h-5 w-5" />, color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', isAction: true, action: onBackToPublic },
+                { id: 'logout', name: 'Keluar Panel', icon: <LogOut className="h-5 w-5" />, color: 'bg-red-500/10 text-red-400 border-red-500/20', isAction: true, action: onLogout }
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    if (item.isAction) {
+                      item.action();
+                    } else {
+                      setActiveMenu(item.id);
+                      closeForm();
+                    }
+                    setIsLainnyaOpen(false);
+                  }}
+                  className={`flex flex-col items-center justify-center p-4 rounded-2xl border text-center font-bold text-xs space-y-2 cursor-pointer hover:bg-slate-800 transition-colors ${item.color}`}
+                >
+                  <div className="p-2 rounded-xl bg-white/5">
+                    {item.icon}
+                  </div>
+                  <span>{item.name}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Close Button */}
+            <button
+              onClick={() => setIsLainnyaOpen(false)}
+              className="w-full mt-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
+            >
+              Tutup
+            </button>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  </div>
   );
 }

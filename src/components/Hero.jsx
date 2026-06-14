@@ -66,7 +66,7 @@ export default function Hero() {
               variants={itemVariants}
               className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
             >
-              Selamat datang di portal resmi pemantauan budidaya anggur **KOMPAK** (Komunitas Pembudidaya Anggur Krejengan). Kami menyajikan transparansi data pertumbuhan anggur dari kebun petani lokal di setiap sudut wilayah desa secara real-time.
+              Selamat datang di portal resmi pemantauan budidaya anggur KOMPAK (Komunitas Pembudidaya Anggur Krejengan). Kami menyajikan transparansi data pertumbuhan anggur dari kebun petani lokal di setiap sudut wilayah desa secara real-time.
             </motion.p>
 
             {/* Buttons */}
@@ -98,15 +98,15 @@ export default function Hero() {
               className="grid grid-cols-3 gap-4 sm:gap-6 pt-8 max-w-md sm:max-w-xl mx-auto lg:mx-0 border-t border-purple-100"
             >
               <div className="text-center lg:text-left">
-                <span className="block text-2xl sm:text-3xl font-display font-extrabold text-primary">20+</span>
+                <span className="block text-2xl sm:text-3xl font-display font-extrabold text-primary">10+</span>
                 <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Varietas Anggur</span>
               </div>
               <div className="text-center lg:text-left border-x border-purple-100 px-2">
-                <span className="block text-2xl sm:text-3xl font-display font-extrabold text-leaf">50+</span>
+                <span className="block text-2xl sm:text-3xl font-display font-extrabold text-leaf">5+</span>
                 <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Titik Kebun</span>
               </div>
               <div className="text-center lg:text-left">
-                <span className="block text-2xl sm:text-3xl font-display font-extrabold text-gold">12+</span>
+                <span className="block text-2xl sm:text-3xl font-display font-extrabold text-gold">2+</span>
                 <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Kelompok Tani</span>
               </div>
             </motion.div>
