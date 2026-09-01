@@ -87,7 +87,7 @@ export default function ProfileDesa() {
               {/* Outer frame */}
               <div className="absolute top-4 left-4 z-10 flex items-center space-x-2 px-3 py-1.5 bg-black/60 backdrop-blur-md rounded-full text-white text-xs font-bold">
                 <YoutubeIcon className="h-4 w-4 text-red-500" />
-                <span>Dokumentasi Budidaya</span>
+                <span>Dokumentasi Desa Krejenggan</span>
               </div>
               
               {/* Responsive Iframe Container */}
