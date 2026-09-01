@@ -133,7 +133,7 @@ export default function Contact() {
             <div className="space-y-4">
               {/* WhatsApp Widget */}
               <a
-                href="https://wa.me/628123456789"
+                href="https://wa.me/6285233753564"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center justify-between p-5 bg-emerald-50/50 hover:bg-emerald-50 border border-emerald-100 hover:border-emerald-200 rounded-3xl transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer"
@@ -154,7 +154,7 @@ export default function Contact() {
 
               {/* Instagram Widget */}
               <a
-                href="https://instagram.com/desa_krejengan"
+                href="https://www.instagram.com/krejengansmart?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw=="
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center justify-between p-5 bg-rose-50/50 hover:bg-rose-50 border border-rose-100 hover:border-rose-200 rounded-3xl transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer"
@@ -175,7 +175,7 @@ export default function Contact() {
 
               {/* TikTok Widget */}
               <a
-                href="https://tiktok.com/@kompak_krejengan"
+                href="https://www.tiktok.com/@anggurkrejengan?is_from_webapp=1&sender_device=pc"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center justify-between p-5 bg-slate-50/70 hover:bg-slate-50 border border-slate-200/60 rounded-3xl transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer"
