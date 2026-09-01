@@ -127,7 +127,7 @@ export default function Hero() {
                 🍇 Panen Segar Probolinggo
               </div>
               <img
-                src="/hero_grapes.png"
+                src="/pahuda.png"
                 alt="Kebun Anggur Desa Krejengan"
                 className="w-full h-[320px] sm:h-[400px] object-cover rounded-2xl group-hover:scale-102 transition-transform duration-700 ease-out"
               />
@@ -140,8 +140,8 @@ export default function Hero() {
                 <Leaf className="h-5 w-5" />
               </div>
               <div>
-                <span className="block text-xs font-bold text-slate-800">100% Organik</span>
-                <span className="text-[10px] text-slate-500">Pupuk alami lokal</span>
+                <span className="block text-xs font-bold text-slate-800">Bumdes</span>
+                <span className="text-[10px] text-slate-500">Krejenggan</span>
               </div>
             </div>
           </motion.div>
