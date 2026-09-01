@@ -106,8 +106,8 @@ export default function Hero() {
                 <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Titik Kebun</span>
               </div>
               <div className="text-center lg:text-left">
-                <span className="block text-2xl sm:text-3xl font-display font-extrabold text-gold">2+</span>
-                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Kelompok Tani</span>
+                <span className="block text-2xl sm:text-3xl font-display font-extrabold text-gold">10+</span>
+                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Petani Anggur</span>
               </div>
             </motion.div>
           </motion.div>
@@ -124,10 +124,10 @@ export default function Hero() {
             
             <div className="relative bg-white p-3 rounded-3xl shadow-2xl border border-white/40 overflow-hidden group">
               <div className="absolute top-6 right-6 z-10 px-3 py-1 bg-white/90 backdrop-blur-md rounded-full shadow-md text-xs font-bold text-slate-800 border border-purple-100">
-                🍇 Panen Segar Probolinggo
+                🍇 Panen Anggur Desa
               </div>
               <img
-                src="/hero_grapes.png"
+                src="/pahuda.png"
                 alt="Kebun Anggur Desa Krejengan"
                 className="w-full h-[320px] sm:h-[400px] object-cover rounded-2xl group-hover:scale-102 transition-transform duration-700 ease-out"
               />
@@ -135,15 +135,7 @@ export default function Hero() {
             </div>
             
             {/* Small floating tag */}
-            <div className="absolute -bottom-6 left-4 md:-left-6 bg-white/95 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-purple-50 flex items-center space-x-3 max-w-[200px] animate-float">
-              <div className="p-2 bg-leaf/10 text-leaf rounded-xl">
-                <Leaf className="h-5 w-5" />
-              </div>
-              <div>
-                <span className="block text-xs font-bold text-slate-800">100% Organik</span>
-                <span className="text-[10px] text-slate-500">Pupuk alami lokal</span>
-              </div>
-            </div>
+            
           </motion.div>
         </div>
       </div>

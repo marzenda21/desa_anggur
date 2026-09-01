@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { collection, onSnapshot, getDocs, doc, setDoc } from 'firebase/firestore';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { db, auth } from './firebase';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ProfileDesa from './components/ProfileDesa';
@@ -120,75 +123,84 @@ const defaultArticles = [
 function App() {
   const [view, setView] = useState('public'); // 'public', 'login', 'admin'
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // States initialized from LocalStorage (Mock DB)
-  const [farmers, setFarmers] = useState(() => {
-    const local = localStorage.getItem('kompak_farmers');
-    return local ? JSON.parse(local) : defaultFarmers;
-  });
+  const [farmers, setFarmers] = useState([]);
+  const [grapes, setGrapes] = useState([]);
+  const [growths, setGrowths] = useState([]);
+  const [gallery, setGallery] = useState([]);
+  const [articles, setArticles] = useState([]);
 
-  const [grapes, setGrapes] = useState(() => {
-    const local = localStorage.getItem('kompak_grapes');
-    return local ? JSON.parse(local) : defaultGrapes;
-  });
-
-  const [growths, setGrowths] = useState(() => {
-    const local = localStorage.getItem('kompak_growths');
-    return local ? JSON.parse(local) : defaultGrowths;
-  });
-
-  const [gallery, setGallery] = useState(() => {
-    const local = localStorage.getItem('kompak_gallery');
-    return local ? JSON.parse(local) : defaultGallery;
-  });
-
-  const [articles, setArticles] = useState(() => {
-    const local = localStorage.getItem('kompak_articles');
-    return local ? JSON.parse(local) : defaultArticles;
-  });
-
-  // Sync to LocalStorage
-  useEffect(() => {
-    localStorage.setItem('kompak_farmers', JSON.stringify(farmers));
-  }, [farmers]);
-
-  useEffect(() => {
-    localStorage.setItem('kompak_grapes', JSON.stringify(grapes));
-  }, [grapes]);
-
-  useEffect(() => {
-    localStorage.setItem('kompak_growths', JSON.stringify(growths));
-  }, [growths]);
-
-  useEffect(() => {
-    localStorage.setItem('kompak_gallery', JSON.stringify(gallery));
-  }, [gallery]);
-
-  useEffect(() => {
-    localStorage.setItem('kompak_articles', JSON.stringify(articles));
-  }, [articles]);
-
-  // Check login persistency
-  useEffect(() => {
-    const loginState = localStorage.getItem('kompak_is_logged_in');
-    if (loginState === 'true') {
-      setIsLoggedIn(true);
+  // Auto-seed function (only runs if collection is empty)
+  const seedCollection = async (collectionName, defaultData) => {
+    const colRef = collection(db, collectionName);
+    const snap = await getDocs(colRef);
+    if (snap.empty) {
+      console.log(`Seeding ${collectionName}...`);
+      for (const item of defaultData) {
+        const id = item.id.toString();
+        await setDoc(doc(db, collectionName, id), item);
+      }
     }
+  };
+
+  useEffect(() => {
+    const seedData = async () => {
+      await seedCollection('farmers', defaultFarmers);
+      await seedCollection('grapes', defaultGrapes);
+      await seedCollection('growths', defaultGrowths);
+      await seedCollection('gallery', defaultGallery);
+      await seedCollection('articles', defaultArticles);
+    };
+    seedData();
+
+    const unsubFarmers = onSnapshot(collection(db, 'farmers'), (snap) => {
+      setFarmers(snap.docs.map(doc => ({ id: Number(doc.id), ...doc.data() })));
+    });
+    const unsubGrapes = onSnapshot(collection(db, 'grapes'), (snap) => {
+      setGrapes(snap.docs.map(doc => ({ id: Number(doc.id), ...doc.data() })));
+    });
+    const unsubGrowths = onSnapshot(collection(db, 'growths'), (snap) => {
+      setGrowths(snap.docs.map(doc => ({ id: Number(doc.id), ...doc.data() })));
+    });
+    const unsubGallery = onSnapshot(collection(db, 'gallery'), (snap) => {
+      setGallery(snap.docs.map(doc => ({ id: Number(doc.id), ...doc.data() })));
+    });
+    const unsubArticles = onSnapshot(collection(db, 'articles'), (snap) => {
+      setArticles(snap.docs.map(doc => ({ id: Number(doc.id), ...doc.data() })));
+    });
+
+    return () => {
+      unsubFarmers(); unsubGrapes(); unsubGrowths(); unsubGallery(); unsubArticles();
+    };
+  }, []);
+
+  // Auth Listener
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+      setIsLoading(false);
+    });
+    return () => unsubscribe();
   }, []);
 
   const handleLogin = () => {
-    setIsLoggedIn(true);
-    localStorage.setItem('kompak_is_logged_in', 'true');
+    // setIsLoggedIn is handled by onAuthStateChanged
     setView('admin');
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem('kompak_is_logged_in');
+  const handleLogout = async () => {
+    await signOut(auth);
     setView('public');
   };
 
   const currentYear = new Date().getFullYear();
+
+  if (isLoading) return <div className="min-h-screen flex items-center justify-center bg-slate-50">Loading...</div>;
 
   // Render Admin Dashboard view
   if (view === 'admin' && isLoggedIn) {

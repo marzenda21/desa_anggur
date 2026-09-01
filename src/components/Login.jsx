@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Leaf, Eye, EyeOff, ArrowLeft, Lock, Mail, AlertCircle } from 'lucide-react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
 
 export default function Login({ onLoginSuccess, onBackToPublic }) {
   const [email, setEmail] = useState('');
@@ -9,20 +11,19 @@ export default function Login({ onLoginSuccess, onBackToPublic }) {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
-    // Simulated short network delay for premium feel
-    setTimeout(() => {
-      if (email === 'anggur.krejengan@gmail.com' && password === 'anggur321') {
-        onLoginSuccess();
-      } else {
-        setError('Email atau password salah. Silakan coba kembali.');
-        setIsLoading(false);
-      }
-    }, 800);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      onLoginSuccess();
+    } catch (err) {
+      setError('Email atau sandi salah, atau akun tidak ditemukan.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

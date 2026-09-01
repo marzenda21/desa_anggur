@@ -133,7 +133,7 @@ export default function Contact() {
             <div className="space-y-4">
               {/* WhatsApp Widget */}
               <a
-                href="https://wa.me/628123456789"
+                href="https://wa.me/6285233753564"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center justify-between p-5 bg-emerald-50/50 hover:bg-emerald-50 border border-emerald-100 hover:border-emerald-200 rounded-3xl transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer"
@@ -144,7 +144,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <span className="block text-xs font-extrabold text-emerald-800 uppercase tracking-wider">WhatsApp Pengurus</span>
-                    <span className="font-display font-extrabold text-sm sm:text-base text-slate-800">+62 812-3456-789</span>
+                    <span className="font-display font-extrabold text-sm sm:text-base text-slate-800">+6285233753564</span>
                   </div>
                 </div>
                 <div className="p-2 bg-white rounded-full text-slate-400 group-hover:text-emerald-500 group-hover:translate-x-0.5 transition-all shadow-sm">
@@ -154,7 +154,7 @@ export default function Contact() {
 
               {/* Instagram Widget */}
               <a
-                href="https://instagram.com/desa_krejengan"
+                href="https://www.instagram.com/krejengansmart?utm_source=ig_web_button_share_sheet&igsi=ZDNlZDc0MzIxNw=="
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center justify-between p-5 bg-rose-50/50 hover:bg-rose-50 border border-rose-100 hover:border-rose-200 rounded-3xl transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer"
@@ -165,7 +165,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <span className="block text-xs font-extrabold text-rose-800 uppercase tracking-wider">Instagram Desa</span>
-                    <span className="font-display font-extrabold text-sm sm:text-base text-slate-800">@kompak_krejengan</span>
+                    <span className="font-display font-extrabold text-sm sm:text-base text-slate-800">@Kim Smart Krejengan</span>
                   </div>
                 </div>
                 <div className="p-2 bg-white rounded-full text-slate-400 group-hover:text-rose-500 group-hover:translate-x-0.5 transition-all shadow-sm">
@@ -175,7 +175,7 @@ export default function Contact() {
 
               {/* TikTok Widget */}
               <a
-                href="https://tiktok.com/@kompak_krejengan"
+                href="https://www.tiktok.com/@anggurkrejengan?is_from_webapp=1&sender_device=pc"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center justify-between p-5 bg-slate-50/70 hover:bg-slate-50 border border-slate-200/60 rounded-3xl transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer"

@@ -38,15 +38,15 @@ export default function ProfileDesa() {
             transition={{ duration: 0.6 }}
           >
             <h4 className="font-display text-2xl font-bold text-slate-800 leading-tight">
-              Mengembalikan Kejayaan Anggur Probolinggo Melalui Inovasi Desa
+              Mengenal Profile Desa Krejengan
             </h4>
             
             <p className="text-slate-600 leading-relaxed">
-              Kabupaten Probolinggo sejak lama dikenal sebagai ikon penghasil buah anggur berkualitas. Namun, seiring waktu, populasi tanaman anggur sempat menyusut. Desa Krejengan mengambil langkah berani dengan mencanangkan gerakan budidaya anggur secara masif sejak beberapa tahun lalu.
+              Desa Krejengan adalah sebuah desa asri di Kabupaten Probolinggo, Jawa Timur. Terletak strategis di sebelah selatan Kota Kraksaan, desa yang memiliki sejarah panjang sejak masa babat alas oleh para pengembara terdahulu ini tumbuh menjadi lingkungan masyarakat yang guyub dan religius. Kehidupan lokal di desa ini terasa sangat kental dengan warisan budaya.
             </p>
 
             <p className="text-slate-600 leading-relaxed">
-              Dipusatkan di sekitar Perpustakaan Desa Aqila, program ini melahirkan KOMPAK (Komunitas Pembudidaya Anggur Krejengan). Komunitas ini menjadi wadah edukasi warga dalam membudidayakan lebih dari 10 varietas anggur di pekarangan rumah, dengan bimbingan teknologi modern dan pemantauan terstruktur.
+              Kabupaten Probolinggo sejak lama dikenal sebagai ikon penghasil buah anggur berkualitas. Namun, seiring waktu, populasi tanaman anggur sempat menyusut. Desa Krejengan mengambil langkah berani dengan mencanangkan gerakan budidaya anggur secara masif sejak beberapa tahun lalu.
             </p>
 
             {/* Quick highlights */}
@@ -87,7 +87,7 @@ export default function ProfileDesa() {
               {/* Outer frame */}
               <div className="absolute top-4 left-4 z-10 flex items-center space-x-2 px-3 py-1.5 bg-black/60 backdrop-blur-md rounded-full text-white text-xs font-bold">
                 <YoutubeIcon className="h-4 w-4 text-red-500" />
-                <span>Dokumentasi Budidaya</span>
+                <span>Profile Desa</span>
               </div>
               
               {/* Responsive Iframe Container */}

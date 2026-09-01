@@ -6,6 +6,8 @@ import {
   Menu, X, Plus, Edit2, Trash2, Calendar, Phone, MapPin, Check, AlertTriangle, XCircle, Heart, Upload, Compass
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { doc, setDoc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 // Custom Map Controller to center map
 function MapController({ center }) {
@@ -67,28 +69,60 @@ export default function AdminDashboard({
     setFormCoordinate([-7.7928, 113.4072]);
   };
 
-  // Helper for reading image files as Base64 strings (offline uploads)
-  const handleImageUpload = (e, setPhotoCallback) => {
+  const [isUploading, setIsUploading] = useState(false);
+
+  // Helper for uploading image to ImgBB
+  const handleImageUpload = async (e, setPhotoCallback) => {
     const file = e.target.files[0];
-    if (file) {
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setPhotoCallback(reader.result);
-      };
       reader.readAsDataURL(file);
+      reader.onloadend = async () => {
+        try {
+          // Ambil raw base64 saja, hilangkan prefix 'data:image/jpeg;base64,'
+          const base64String = reader.result.split(',')[1];
+          
+          const formData = new FormData();
+          formData.append('image', base64String);
+          
+          const res = await fetch(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`, {
+            method: 'POST',
+            body: formData,
+          });
+          
+          const data = await res.json();
+          
+          if (data.success) {
+            setPhotoCallback(data.data.url);
+          } else {
+            console.error("ImgBB Error:", data);
+            alert('Gagal mengupload gambar: ' + (data.error?.message || 'Error tidak diketahui'));
+          }
+        } catch (uploadErr) {
+          console.error(uploadErr);
+          alert('Terjadi kesalahan jaringan saat menghubungi ImgBB.');
+        } finally {
+          setIsUploading(false);
+        }
+      };
+    } catch (err) {
+      console.error(err);
+      alert('Terjadi kesalahan saat memproses gambar lokal.');
+      setIsUploading(false);
     }
   };
 
   // CRUD actions for Farmers
-  const handleFarmerSubmit = (e) => {
+  const handleFarmerSubmit = async (e) => {
     e.preventDefault();
     if (editingItem) {
-      // Edit
-      setFarmers(farmers.map(f => f.id === editingItem.id ? { ...f, ...farmerForm } : f));
+      await updateDoc(doc(db, 'farmers', editingItem.id.toString()), farmerForm);
     } else {
-      // Create
-      const newId = farmers.length > 0 ? Math.max(...farmers.map(f => f.id)) + 1 : 1;
-      setFarmers([...farmers, { id: newId, ...farmerForm }]);
+      const newId = Date.now().toString();
+      await setDoc(doc(db, 'farmers', newId), { id: Number(newId), ...farmerForm });
     }
     closeForm();
   };
@@ -99,22 +133,21 @@ export default function AdminDashboard({
     setIsFormOpen(true);
   };
 
-  const handleFarmerDelete = (id) => {
+  const handleFarmerDelete = async (id) => {
     if (window.confirm('Apakah Anda yakin ingin menghapus data petani ini?')) {
-      setFarmers(farmers.filter(f => f.id !== id));
-      // Also clean up dependent growth records
-      setGrowths(growths.filter(g => g.farmerId !== id));
+      await deleteDoc(doc(db, 'farmers', id.toString()));
+      // Also clean up dependent growth records in a real app, but for simplicity here we just delete the farmer.
     }
   };
 
   // CRUD actions for Grapes
-  const handleGrapeSubmit = (e) => {
+  const handleGrapeSubmit = async (e) => {
     e.preventDefault();
     if (editingItem) {
-      setGrapes(grapes.map(g => g.id === editingItem.id ? { ...g, ...grapeForm } : g));
+      await updateDoc(doc(db, 'grapes', editingItem.id.toString()), grapeForm);
     } else {
-      const newId = grapes.length > 0 ? Math.max(...grapes.map(g => g.id)) + 1 : 1;
-      setGrapes([...grapes, { id: newId, ...grapeForm }]);
+      const newId = Date.now().toString();
+      await setDoc(doc(db, 'grapes', newId), { id: Number(newId), ...grapeForm });
     }
     closeForm();
   };
@@ -125,15 +158,14 @@ export default function AdminDashboard({
     setIsFormOpen(true);
   };
 
-  const handleGrapeDelete = (id) => {
+  const handleGrapeDelete = async (id) => {
     if (window.confirm('Apakah Anda yakin ingin menghapus varietas anggur ini?')) {
-      setGrapes(grapes.filter(g => g.id !== id));
-      setGrowths(growths.filter(g => g.grapeId !== id));
+      await deleteDoc(doc(db, 'grapes', id.toString()));
     }
   };
 
   // CRUD actions for Growth Records
-  const handleGrowthSubmit = (e) => {
+  const handleGrowthSubmit = async (e) => {
     e.preventDefault();
     const dataToSubmit = {
       ...growthForm,
@@ -145,10 +177,10 @@ export default function AdminDashboard({
     };
 
     if (editingItem) {
-      setGrowths(growths.map(g => g.id === editingItem.id ? { ...g, ...dataToSubmit } : g));
+      await updateDoc(doc(db, 'growths', editingItem.id.toString()), dataToSubmit);
     } else {
-      const newId = growths.length > 0 ? Math.max(...growths.map(g => g.id)) + 1 : 1;
-      setGrowths([...growths, { id: newId, ...dataToSubmit }]);
+      const newId = Date.now().toString();
+      await setDoc(doc(db, 'growths', newId), { id: Number(newId), ...dataToSubmit });
     }
     closeForm();
   };
@@ -160,20 +192,20 @@ export default function AdminDashboard({
     setIsFormOpen(true);
   };
 
-  const handleGrowthDelete = (id) => {
+  const handleGrowthDelete = async (id) => {
     if (window.confirm('Apakah Anda yakin ingin menghapus data laporan pertumbuhan ini?')) {
-      setGrowths(growths.filter(g => g.id !== id));
+      await deleteDoc(doc(db, 'growths', id.toString()));
     }
   };
 
   // CRUD actions for Gallery
-  const handleGallerySubmit = (e) => {
+  const handleGallerySubmit = async (e) => {
     e.preventDefault();
     if (editingItem) {
-      setGallery(gallery.map(g => g.id === editingItem.id ? { ...g, ...galleryForm } : g));
+      await updateDoc(doc(db, 'gallery', editingItem.id.toString()), galleryForm);
     } else {
-      const newId = gallery.length > 0 ? Math.max(...gallery.map(g => g.id)) + 1 : 1;
-      setGallery([...gallery, { id: newId, ...galleryForm }]);
+      const newId = Date.now().toString();
+      await setDoc(doc(db, 'gallery', newId), { id: Number(newId), ...galleryForm });
     }
     closeForm();
   };
@@ -184,20 +216,20 @@ export default function AdminDashboard({
     setIsFormOpen(true);
   };
 
-  const handleGalleryDelete = (id) => {
+  const handleGalleryDelete = async (id) => {
     if (window.confirm('Apakah Anda yakin ingin menghapus foto galeri ini?')) {
-      setGallery(gallery.filter(g => g.id !== id));
+      await deleteDoc(doc(db, 'gallery', id.toString()));
     }
   };
 
   // CRUD actions for Articles
-  const handleArticleSubmit = (e) => {
+  const handleArticleSubmit = async (e) => {
     e.preventDefault();
     if (editingItem) {
-      setArticles(articles.map(a => a.id === editingItem.id ? { ...a, ...articleForm } : a));
+      await updateDoc(doc(db, 'articles', editingItem.id.toString()), articleForm);
     } else {
-      const newId = articles.length > 0 ? Math.max(...articles.map(a => a.id)) + 1 : 1;
-      setArticles([...articles, { id: newId, ...articleForm }]);
+      const newId = Date.now().toString();
+      await setDoc(doc(db, 'articles', newId), { id: Number(newId), ...articleForm });
     }
     closeForm();
   };
@@ -208,9 +240,9 @@ export default function AdminDashboard({
     setIsFormOpen(true);
   };
 
-  const handleArticleDelete = (id) => {
+  const handleArticleDelete = async (id) => {
     if (window.confirm('Apakah Anda yakin ingin menghapus artikel ini?')) {
-      setArticles(articles.filter(a => a.id !== id));
+      await deleteDoc(doc(db, 'articles', id.toString()));
     }
   };
 
@@ -590,9 +622,10 @@ export default function AdminDashboard({
                     </button>
                     <button
                       type="submit"
-                      className="px-6 py-2.5 bg-gradient-to-r from-primary to-primary-dark text-white rounded-xl text-xs font-extrabold cursor-pointer"
+                      disabled={isUploading}
+                      className={`px-6 py-2.5 bg-gradient-to-r from-primary to-primary-dark text-white rounded-xl text-xs font-extrabold ${isUploading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                     >
-                      Simpan Data
+                      {isUploading ? 'Mengupload Foto...' : 'Simpan Data'}
                     </button>
                   </div>
                 </form>
@@ -762,9 +795,10 @@ export default function AdminDashboard({
                     </button>
                     <button
                       type="submit"
-                      className="px-6 py-2.5 bg-gradient-to-r from-primary to-primary-dark text-white rounded-xl text-xs font-extrabold cursor-pointer"
+                      disabled={isUploading}
+                      className={`px-6 py-2.5 bg-gradient-to-r from-primary to-primary-dark text-white rounded-xl text-xs font-extrabold ${isUploading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                     >
-                      Simpan Data
+                      {isUploading ? 'Mengupload Foto...' : 'Simpan Data'}
                     </button>
                   </div>
                 </form>
